@@ -1,6 +1,11 @@
 # Utiliser une image de base avec Debian
 FROM debian:latest
 
+# Désactiver IPv6 en modifiant sysctl
+RUN echo 'net.ipv6.conf.all.disable_ipv6 = 1' >> /etc/sysctl.conf && \
+    echo 'net.ipv6.conf.default.disable_ipv6 = 1' >> /etc/sysctl.conf && \
+    echo 'net.ipv6.conf.lo.disable_ipv6 = 1' >> /etc/sysctl.conf
+
 # Mettre à jour les paquets et installer curl et BIND9
 RUN apt-get update && apt-get install -y \
     curl \
@@ -16,6 +21,8 @@ RUN apt-get update && apt-get install -y \
 
 # Copier le fichier de configuration BIND local dans le conteneur
 COPY named.conf /etc/bind/named.conf
+
+RUN sed -i '/options {/a \\tlisten-on-v6 { none; };' /etc/bind/named.conf.options
 
 # Ouvrir les ports nécessaires pour DNS
 EXPOSE 53/udp
