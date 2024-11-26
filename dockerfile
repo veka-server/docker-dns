@@ -2,7 +2,7 @@
 FROM debian:latest
 
 # Mettre à jour les packages et installer BIND9
-RUN apt-get update && apt-get install -y bind9 bind9utils bind9-doc dnsutils
+RUN apt-get update && apt-get install -y bind9 bind9utils bind9-doc dnsutils curl
 
 # Télécharger le fichier root.hints directement depuis l'URL
 RUN curl -o /usr/share/dns/root.hints https://www.internic.net/domain/named.root
