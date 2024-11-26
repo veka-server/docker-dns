@@ -8,13 +8,9 @@ RUN apt-get update && apt-get install -y \
     bind9utils \
     procps \
     bind9-doc \
-    dnsutils && \
-    rm -rf /var/lib/apt/lists/*  # Nettoyer le cache APT pour réduire la taille de l'image
-
-# Désactiver IPv6 en modifiant sysctl
-RUN echo 'net.ipv6.conf.all.disable_ipv6 = 1' >> /etc/sysctl.conf && \
-    echo 'net.ipv6.conf.default.disable_ipv6 = 1' >> /etc/sysctl.conf && \
-    echo 'net.ipv6.conf.lo.disable_ipv6 = 1' >> /etc/sysctl.conf
+    dnsutils \
+    nano
+#    && rm -rf /var/lib/apt/lists/*  # Nettoyer le cache APT pour réduire la taille de l'image
 
 # Télécharger le fichier root.hints directement depuis l'URL
 # RUN curl -o /usr/share/dns/root.hints https://www.internic.net/domain/named.root
