@@ -22,7 +22,7 @@ RUN echo 'net.ipv6.conf.all.disable_ipv6 = 1' >> /etc/sysctl.conf && \
 # Copier le fichier de configuration BIND local dans le conteneur
 COPY named.conf /etc/bind/named.conf
 
-RUN sed -i '/options {/a \\tlisten-on-v6 { none; };' /etc/bind/named.conf.options
+RUN sed -i '/listen-on-v6 { any; };/d' /etc/bind/named.conf.options
 
 # Ouvrir les ports nécessaires pour DNS
 EXPOSE 53/udp
