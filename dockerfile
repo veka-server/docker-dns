@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     rm -rf /var/lib/apt/lists/*  # Nettoyer le cache APT pour réduire la taille de l'image
 
 # Télécharger le fichier root.hints directement depuis l'URL
-RUN curl -o /usr/share/dns/root.hints https://www.internic.net/domain/named.root
+# RUN curl -o /usr/share/dns/root.hints https://www.internic.net/domain/named.root
 
 # Copier le fichier de configuration BIND local dans le conteneur
 COPY named.conf /etc/bind/named.conf
