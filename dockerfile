@@ -33,4 +33,6 @@ RUN chmod -R 777 /etc/bind/
 #USER bind
 
 # Démarrer BIND lorsque le conteneur se lance
-CMD ["/usr/sbin/named", "-g", "-c", "/etc/bind/named.conf"]
+# CMD ["/usr/sbin/named", "-g", "-c", "/etc/bind/named.conf"]
+CMD ["named", "-g"]
+
