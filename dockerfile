@@ -1,18 +1,19 @@
-# Utiliser une image de base avec Debian ou Ubuntu
+# Utiliser une image de base avec Debian
 FROM debian:latest
 
-# Mettre à jour les packages et installer BIND9
-RUN apt-get update && apt-get install -y bind9 bind9utils bind9-doc dnsutils curl
+# Mettre à jour les packages et installer curl et BIND9
+RUN apt-get update && apt-get install -y \
+    curl \
+    bind9 \
+    bind9utils \
+    bind9-doc \
+    dnsutils
 
 # Télécharger le fichier root.hints directement depuis l'URL
 RUN curl -o /usr/share/dns/root.hints https://www.internic.net/domain/named.root
 
-# Désactiver IPv6
-RUN echo "options single-request-reopen" > /etc/resolvconf.conf
-
 # Copier le fichier de configuration BIND local dans le conteneur
 COPY named.conf /etc/bind/named.conf
-COPY db.root /etc/bind/db.root
 
 # Ouvrir le port 53 pour DNS
 EXPOSE 53/udp
