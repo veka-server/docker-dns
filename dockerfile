@@ -7,6 +7,9 @@ RUN apt-get update && apt-get install -y bind9 bind9utils bind9-doc dnsutils cur
 # Télécharger le fichier root.hints directement depuis l'URL
 RUN curl -o /usr/share/dns/root.hints https://www.internic.net/domain/named.root
 
+# Désactiver IPv6
+RUN echo "options single-request-reopen" > /etc/resolvconf.conf
+
 # Copier le fichier de configuration BIND local dans le conteneur
 COPY named.conf /etc/bind/named.conf
 
