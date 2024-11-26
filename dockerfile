@@ -12,6 +12,7 @@ RUN echo "options single-request-reopen" > /etc/resolvconf.conf
 
 # Copier le fichier de configuration BIND local dans le conteneur
 COPY named.conf /etc/bind/named.conf
+COPY db.root /etc/bind/db.root
 
 # Ouvrir le port 53 pour DNS
 EXPOSE 53/udp
