@@ -27,7 +27,7 @@ CMD echo "User: $SSH_USER, Server: $SSH_SERVER, Port: $SSH_PORT"; \
     # 2. Utiliser socat pour rediriger le trafic UDP via le tunnel SSH
     socat UDP-RECVFROM:$LOCAL_PORT,fork TCP:127.0.0.1:$LOCAL_PORT & \
     # 3. Démarrer socat sur le serveur distant pour reconvertir TCP -> UDP
-    sshpass -p $SSH_PASSWORD ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_SERVER "socat TCP-LISTEN:1053,fork UDP:$DEST_IP:$DEST_PORT"
+    sshpass -p $SSH_PASSWORD ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_SERVER "socat TCP-LISTEN:1053,fork UDP:127.0.0.1:$DEST_PORT"
 
 
 
