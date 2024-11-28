@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     procps \
     bind9-doc \
     dnsutils \
-    iptable \
+    iptables \
     nano
 #    && rm -rf /var/lib/apt/lists/*  # Nettoyer le cache APT pour réduire la taille de l'image
 
