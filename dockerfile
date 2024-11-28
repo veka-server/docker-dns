@@ -23,4 +23,4 @@ EXPOSE 53/tcp
 # Script de démarrage pour établir le tunnel UDP via SSH
 CMD echo "User: $SSH_USER, Server: $SSH_SERVER, Port: $SSH_PORT"; \
     sshpass -p $SSH_PASSWORD ssh -N -L $LOCAL_PORT:127.0.0.1:$REMOTE_PORT -p $SSH_PORT -o StrictHostKeyChecking=no $SSH_USER@$SSH_SERVER & \
-    socat UDP-LISTEN:$LOCAL_PORT,fork UDP:$SSH_SERVER:$REMOTE_PORT
+    socat UDP-RECVFROM:$LOCAL_PORT,fork UDP:$SSH_SERVER:$REMOTE_PORT
