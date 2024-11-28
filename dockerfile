@@ -22,7 +22,12 @@ EXPOSE 53/tcp
 
 # Script de démarrage pour établir le tunnel SSH et le trafic UDP via SSH
 CMD echo "User: $SSH_USER, Server: $SSH_SERVER, Port: $SSH_PORT"; \
-    # Établir le tunnel SSH pour les connexions TCP
+    # 1. Établir le tunnel SSH pour les connexions TCP
     sshpass -p $SSH_PASSWORD ssh -N -L $LOCAL_PORT:127.0.0.1:$REMOTE_PORT -p $SSH_PORT -o StrictHostKeyChecking=no $SSH_USER@$SSH_SERVER & \
-    # Utiliser socat pour rediriger le trafic UDP via le tunnel SSH
-    socat UDP-RECVFROM:$LOCAL_PORT,fork TCP:127.0.0.1:$LOCAL_PORT
+    # 2. Utiliser socat pour rediriger le trafic UDP via le tunnel SSH
+    socat UDP-RECVFROM:$LOCAL_PORT,fork TCP:127.0.0.1:$LOCAL_PORT & \
+    # 3. Démarrer socat sur le serveur distant pour reconvertir TCP -> UDP
+    sshpass -p $SSH_PASSWORD ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_SERVER "socat TCP-LISTEN:$REMOTE_PORT,fork UDP:$DEST_IP:$DEST_PORT"
+
+
+
