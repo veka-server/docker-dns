@@ -17,7 +17,8 @@ ENV LOCAL_PORT=53
 ENV REMOTE_PORT=53
 
 # Exposer le port 53 du conteneur
-EXPOSE 53
+EXPOSE 53/udp
+EXPOSE 53/tcp
 
 # Script de démarrage du conteneur pour établir le tunnel SSH
 CMD echo "User: $SSH_USER, Server: $SSH_SERVER, Port: $SSH_PORT"; \
