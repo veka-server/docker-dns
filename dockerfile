@@ -2,7 +2,7 @@
 FROM alpine:latest
 
 # Installer OpenSSH, socat et bash
-RUN apk update && apk add --no-cache openssh socat bash
+RUN apk update && apk add --no-cache openssh socat bash sshpass
 
 # Configuration de l'utilisateur SSH
 RUN adduser -D sshuser && \
