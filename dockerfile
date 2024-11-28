@@ -1,30 +1,24 @@
-# Utiliser une image de base avec Debian
-FROM debian:latest
+# Utiliser une image légère de base
+FROM alpine:latest
 
-# Mettre à jour les paquets et installer curl et BIND9
-RUN apt-get update && apt-get install -y \
-    curl \
-    bind9 \
-    bind9utils \
-    procps \
-    bind9-doc \
-    dnsutils \
-    nano
-#    && rm -rf /var/lib/apt/lists/*  # Nettoyer le cache APT pour réduire la taille de l'image
+# Installer OpenSSH, sshpass et bash
+RUN apk update && apk add --no-cache openssh bash sshpass
 
-# Télécharger le fichier root.hints directement depuis l'URL
-RUN curl -o /usr/share/dns/root.hints https://www.internic.net/domain/named.root
+# Configuration de l'utilisateur SSH
+RUN adduser -D sshuser && \
+    mkdir /home/sshuser/.ssh
 
-# Copier le fichier de configuration BIND local dans le conteneur
-COPY named.conf /etc/bind/named.conf
+# Définir les variables d'environnement par défaut
+ENV SSH_USER=sshuser
+ENV SSH_PASSWORD=sshpassword
+ENV SSH_PORT=22
+ENV SSH_SERVER=remote_server
+ENV LOCAL_PORT=53
+ENV REMOTE_PORT=53
 
-# Ouvrir les ports nécessaires pour DNS
-EXPOSE 53/udp
-EXPOSE 53/tcp
+# Exposer le port 53 du conteneur
+EXPOSE 53
 
-RUN chmod -R 777 /etc/bind/
-
-# Démarrer BIND lorsque le conteneur se lance
-# CMD ["/usr/sbin/named", "-g", "-c", "/etc/bind/named.conf"]
-CMD ["named", "-g"]
-
+# Script de démarrage du conteneur pour établir le tunnel SSH
+CMD echo "User: $SSH_USER, Server: $SSH_SERVER, Port: $SSH_PORT"; \
+    sshpass -p $SSH_PASSWORD ssh -N -L $LOCAL_PORT:127.0.0.1:$REMOTE_PORT -p $SSH_PORT -o StrictHostKeyChecking=no $SSH_USER@$SSH_SERVER
