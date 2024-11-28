@@ -9,11 +9,15 @@ RUN apt-get update && apt-get install -y \
     procps \
     bind9-doc \
     dnsutils \
+    iptable \
     nano
 #    && rm -rf /var/lib/apt/lists/*  # Nettoyer le cache APT pour réduire la taille de l'image
 
 # Télécharger le fichier root.hints directement depuis l'URL
 # RUN curl -o /usr/share/dns/root.hints https://www.internic.net/domain/named.root
+
+# Bloquer les requêtes DNS en UDP (port 53)
+RUN iptables -A OUTPUT -p udp --dport 53 -j DROP
 
 # Copier le fichier de configuration BIND local dans le conteneur
 COPY named.conf /etc/bind/named.conf
