@@ -2,7 +2,7 @@
 FROM alpine:latest
 
 # Install Unbound and other necessary packages
-RUN apk add --no-cache unbound curl openssl \
+RUN apk add --no-cache unbound curl openssl nano bind-tools htop \
     && curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.cache
 
 # Copy the Unbound configuration file into the container
