@@ -1,30 +1,15 @@
-# Utiliser une image de base avec Debian
-FROM debian:latest
+# Use the lightweight Alpine Linux as base image
+FROM alpine:latest
 
-# Mettre à jour les paquets et installer curl et BIND9
-RUN apt-get update && apt-get install -y \
-    curl \
-    bind9 \
-    bind9utils \
-    procps \
-    bind9-doc \
-    dnsutils \
-    nano
-#    && rm -rf /var/lib/apt/lists/*  # Nettoyer le cache APT pour réduire la taille de l'image
+# Install Unbound and other necessary packages
+RUN apk add --no-cache unbound
 
-# Télécharger le fichier root.hints directement depuis l'URL
-RUN curl -o /usr/share/dns/root.hints https://www.internic.net/domain/named.root
+# Copy the Unbound configuration file into the container
+COPY unbound.conf /etc/unbound/unbound.conf
 
-# Copier le fichier de configuration BIND local dans le conteneur
-COPY named.conf /etc/bind/named.conf
+# Set Unbound to run as the default command
+CMD ["unbound", "-d"]
 
-# Ouvrir les ports nécessaires pour DNS
+# Expose DNS ports
 EXPOSE 53/udp
 EXPOSE 53/tcp
-
-RUN chmod -R 777 /etc/bind/
-
-# Démarrer BIND lorsque le conteneur se lance
-# CMD ["/usr/sbin/named", "-g", "-c", "/etc/bind/named.conf"]
-CMD ["named", "-g"]
-
