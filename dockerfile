@@ -15,4 +15,4 @@ EXPOSE 53/tcp
 # unbound-checkconf /etc/unbound/unbound.conf
 
 # Set Unbound to run as the default command
-CMD ["unbound", "-d"]
+CMD ["unbound", "-d", "-vvvv"]
