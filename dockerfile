@@ -2,7 +2,8 @@
 FROM alpine:latest
 
 # Install Unbound and other necessary packages
-RUN apk add --no-cache unbound
+RUN apk add --no-cache unbound \
+    && curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.cache
 
 # Copy the Unbound configuration file into the container
 COPY unbound.conf /etc/unbound/unbound.conf
