@@ -8,9 +8,6 @@ RUN apk add --no-cache unbound curl openssl nano bind-tools htop \
 # Copy the Unbound configuration file into the container
 COPY unbound.conf /etc/unbound/unbound.conf
 
-RUN unbound-anchor -a /etc/unbound/root.key
-RUN ping -c 3 www.google.com
-
 # Expose DNS ports
 EXPOSE 53/udp
 EXPOSE 53/tcp
